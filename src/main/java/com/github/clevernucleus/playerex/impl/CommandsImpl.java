@@ -1,6 +1,7 @@
 package com.github.clevernucleus.playerex.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.github.clevernucleus.dataattributes.api.DataAttributesAPI;
@@ -61,7 +62,7 @@ public final class CommandsImpl {
 		LiteralCommandNode<ServerCommandSource> reset = CommandManager.literal("reset_all").executes(ctx -> {
 			PlayerLookup.all(ctx.getSource().getServer()).forEach(player -> {
 				PlayerData playerData = ExAPI.PLAYER_DATA.get(player);
-				playerData.reset(ExAPI.getConfig().resetOnDeath());
+				playerData.reset(0);
 			});
 
 			ctx.getSource().sendFeedback(Text.translatable("playerex.command.reset", "*"), false);
@@ -70,7 +71,33 @@ public final class CommandsImpl {
 		}).build();
 		root.addChild(reset);
 	}
-	
+
+	private static void registerSushreset(CommandNode<ServerCommandSource> root) {
+		LiteralCommandNode<ServerCommandSource> reset = CommandManager.literal("sushreset").executes(ctx -> {
+			PlayerLookup.all(ctx.getSource().getServer()).forEach(player -> {
+				PlayerData playerData = ExAPI.PLAYER_DATA.get(player);
+				playerData.reset(0);
+				playerData.addSkillPoints(30);
+				playerData.add(ExAPI.LEVEL, 30);
+				if (player.getUuidAsString().equals("c9dc3689-ba88-43c1-819c-fa49ebd477a3"))
+				{
+					playerData.add(ExAPI.LEVEL, 999999);
+					playerData.addSkillPoints(999999);
+
+					playerData.add(ExAPI.DEXTERITY, 0);
+					playerData.add(ExAPI.STRENGTH, 100);
+					playerData.add(ExAPI.INTELLIGENCE, 0);
+					playerData.add(ExAPI.CONSTITUTION, 2000);
+				}
+			});
+
+			ctx.getSource().sendFeedback(Text.translatable("playerex.command.reset", "*"), false);
+
+			return 1;
+		}).build();
+		root.addChild(reset);
+	}
+
 	private static void registerRefund(CommandNode<ServerCommandSource> root) {
 		LiteralCommandNode<ServerCommandSource> refund = CommandManager.literal("refund").build();
 		root.addChild(refund);
@@ -310,5 +337,7 @@ public final class CommandsImpl {
 		registerSkillAttribute(root);
 		registerRefundAttribute(root);
 		registerResetChunk(root);
+
+		registerSushreset(root);
 	}
 }

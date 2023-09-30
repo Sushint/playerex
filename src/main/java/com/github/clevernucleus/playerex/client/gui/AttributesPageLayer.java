@@ -71,7 +71,7 @@ public class AttributesPageLayer extends PageLayer {
 		Identifier key = button.key();
 		EntityAttributeSupplier attribute = EntityAttributeSupplier.of(key);
 		DataAttributesAPI.ifPresent(this.client.player, attribute, (Object)null, amount -> {
-			double value = this.canRefund() ? -1.0D : 1.0D;
+			double value = this.canRefund() ? -1000.0D : 1000.0D;
 			ClientUtil.modifyAttributes(this.canRefund() ? PacketType.REFUND : PacketType.SKILL, c -> c.accept(attribute, value));
 			this.client.player.playSound(PlayerEx.SP_SPEND_SOUND, SoundCategory.NEUTRAL, ExAPI.getConfig().skillUpVolume(), 1.5F);
 			return (Object)null;
@@ -159,13 +159,6 @@ public class AttributesPageLayer extends PageLayer {
 						}
 						
 						button.alt = this.canRefund();
-					}
-					
-					int buttonDelay = this.buttonDelay.getOrDefault(key, 0);
-					button.active &= (buttonDelay == 0);
-					
-					if(buttonDelay > 0) {
-						this.buttonDelay.put(key, Math.max(0, buttonDelay - 1));
 					}
 				}
 				
