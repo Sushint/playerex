@@ -50,8 +50,11 @@ public final class CommandsImpl {
 		ArgumentCommandNode<ServerCommandSource, EntitySelector> player = CommandManager.argument("player", EntityArgumentType.player()).executes(ctx -> {
 			ServerPlayerEntity serverPlayerEntity = EntityArgumentType.getPlayer(ctx, "player");
 			PlayerData playerData = ExAPI.PLAYER_DATA.get(serverPlayerEntity);
-			playerData.reset(ExAPI.getConfig().resetOnDeath());
-			ctx.getSource().sendFeedback(Text.translatable("playerex.command.reset", serverPlayerEntity.getName()), false);
+			playerData.reset(0);
+			playerData.addSkillPoints(30);
+			playerData.add(ExAPI.LEVEL, 30);
+
+			ctx.getSource().sendFeedback(Text.translatable("playerex.command.reset", serverPlayerEntity.getName()), true);
 			
 			return 1;
 		}).build();
