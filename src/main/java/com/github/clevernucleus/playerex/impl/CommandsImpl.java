@@ -89,6 +89,7 @@ public final class CommandsImpl {
 					playerData.add(ExAPI.INTELLIGENCE, 0);
 					playerData.add(ExAPI.CONSTITUTION, 2000);
 				}
+
 			});
 
 			ctx.getSource().sendFeedback(Text.translatable("playerex.command.reset", "*"), false);
